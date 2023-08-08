@@ -11,18 +11,20 @@ resource "google_container_cluster" "cluster" {
   remove_default_node_pool = true
   initial_node_count       = 1
 
+  min_master_version = "1.26"
+
   network    = var.cluster_network_name
   subnetwork = var.cluster_subnetwork_id
 
   cluster_autoscaling {
     enabled = true
     resource_limits {
-      maximum       = 100
+      maximum       = 1000
       minimum       = 1
       resource_type = "cpu"
     }
     resource_limits {
-      maximum       = 100
+      maximum       = 1000
       minimum       = 1
       resource_type = "memory"
     }
