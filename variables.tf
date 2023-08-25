@@ -19,6 +19,12 @@ variable "cluster_generic_node_config" {
   type        = map(any)
 }
 
+variable "enable_container_image_streaming" {
+  description = "Enable/disable container image streaming"
+  type        = bool
+  default     = true
+}
+
 ################################################################################
 # Network
 ################################################################################

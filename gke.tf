@@ -60,6 +60,13 @@ resource "google_container_cluster" "cluster" {
     workload_pool = "${var.project}.svc.id.goog"
   }
 
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = var.enable_container_image_streaming
+      }
+    }
+  }
 }
 
 # Customizable node pool
@@ -91,6 +98,10 @@ resource "google_container_node_pool" "generic" {
     }
 
     tags = ["generic"]
+
+    gcfs_config {
+      enabled = var.enable_container_image_streaming
+    }
   }
 
   autoscaling {

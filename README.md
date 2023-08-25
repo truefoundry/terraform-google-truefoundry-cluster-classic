@@ -36,6 +36,7 @@ No modules.
 | <a name="input_cluster_node_locations"></a> [cluster\_node\_locations](#input\_cluster\_node\_locations) | AZ for nodes - this should match the region | `list(string)` | n/a | yes |
 | <a name="input_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#input\_cluster\_secondary\_range\_name) | VPC Secondary range name for pods | `string` | `"pods"` | no |
 | <a name="input_cluster_subnetwork_id"></a> [cluster\_subnetwork\_id](#input\_cluster\_subnetwork\_id) | Subnetwork name for the cluster. | `string` | n/a | yes |
+| <a name="input_enable_container_image_streaming"></a> [enable\_container\_image\_streaming](#input\_enable\_container\_image\_streaming) | Enable/disable container image streaming | `bool` | `true` | no |
 | <a name="input_project"></a> [project](#input\_project) | GCP Project | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | region | `string` | n/a | yes |
 | <a name="input_services_secondary_range_name"></a> [services\_secondary\_range\_name](#input\_services\_secondary\_range\_name) | VPC Secondary range name for services | `string` | `"services"` | no |
