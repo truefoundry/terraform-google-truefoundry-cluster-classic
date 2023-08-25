@@ -63,7 +63,7 @@ resource "google_container_cluster" "cluster" {
   node_pool_defaults {
     node_config_defaults {
       gcfs_config {
-        enabled = true 
+        enabled = var.enable_container_image_streaming
       }
     }
   }
@@ -100,7 +100,7 @@ resource "google_container_node_pool" "generic" {
     tags = ["generic"]
 
     gcfs_config {
-      enabled = true
+      enabled = var.enable_container_image_streaming
     }
   }
 
