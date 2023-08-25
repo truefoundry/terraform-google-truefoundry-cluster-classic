@@ -60,8 +60,12 @@ resource "google_container_cluster" "cluster" {
     workload_pool = "${var.project}.svc.id.goog"
   }
 
-  gcfs_config {
-    enabled = true
+  node_pool_defaults {
+    node_config_defaults {
+      gcfs_config {
+        enabled = true 
+      }
+    }
   }
 }
 
