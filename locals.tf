@@ -1,6 +1,6 @@
 locals {
   tags = merge({
-    "terraform-module" = "gcp"
+    "terraform-module" = "truefoundry-cluster-classic"
     "terraform"        = "true"
     "cluster-name"     = var.cluster_name
     },
