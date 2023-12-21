@@ -7,15 +7,15 @@ Truefoundry Google Cloud Cluster Classic Module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | 4.81.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 4.82.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 5.10.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 5.10.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.81.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.82.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.10.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.10.0 |
 
 ## Modules
 
@@ -25,9 +25,9 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/4.82.0/docs/resources/google_container_cluster) | resource |
-| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/4.81.0/docs/resources/compute_firewall) | resource |
-| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/4.81.0/docs/resources/container_node_pool) | resource |
+| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/5.10.0/docs/resources/google_container_cluster) | resource |
+| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/5.10.0/docs/resources/compute_firewall) | resource |
+| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/5.10.0/docs/resources/container_node_pool) | resource |
 
 ## Inputs
 
@@ -40,12 +40,12 @@ No modules.
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster | `string` | n/a | yes |
 | <a name="input_cluster_nap_node_config"></a> [cluster\_nap\_node\_config](#input\_cluster\_nap\_node\_config) | Cluster NAP Node configuration | <pre>object({<br>    disk_size_gb                = optional(string, "300")<br>    disk_type                   = optional(string, "pd-balanced")<br>    enable_secure_boot          = optional(bool, true)<br>    enable_integrity_monitoring = optional(bool, true)<br>    autoscaling_profile         = optional(string, "OPTIMIZE_UTILIZATION")<br>    max_cpu                     = optional(number, 1024)<br>    max_memory                  = optional(number, 1024)<br>    auto_repair                 = optional(bool, true)<br>    auto_upgrade                = optional(bool, true)<br>    max_surge                   = optional(number, 1)<br>    max_unavailable             = optional(number, 0)<br>  })</pre> | `{}` | no |
 | <a name="input_cluster_network_name"></a> [cluster\_network\_name](#input\_cluster\_network\_name) | Network name for the cluster | `string` | n/a | yes |
-| <a name="input_cluster_networking_mode"></a> [cluster\_networking\_mode](#input\_cluster\_networking\_mode) | Networking mode for the cluster. Values can be VPC\_NATIVE (recommended) or ROUTES | `string` | `"VPC_NATIVE"` | no |
+| <a name="input_cluster_networking_mode"></a> [cluster\_networking\_mode](#input\_cluster\_networking\_mode) | Networking mode for the cluster. Values can be VPC\_NATIVE (recommended) or ROUTES. VPC\_NATIVE is default after google-beta 5.0.0 | `string` | `"VPC_NATIVE"` | no |
 | <a name="input_cluster_node_locations"></a> [cluster\_node\_locations](#input\_cluster\_node\_locations) | AZ for nodes - this should match the region | `list(string)` | n/a | yes |
 | <a name="input_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#input\_cluster\_secondary\_range\_name) | VPC Secondary range name for pods | `string` | `"notpods"` | no |
 | <a name="input_cluster_subnet_id"></a> [cluster\_subnet\_id](#input\_cluster\_subnet\_id) | Subnetwork name for the cluster. | `string` | n/a | yes |
 | <a name="input_enable_container_image_streaming"></a> [enable\_container\_image\_streaming](#input\_enable\_container\_image\_streaming) | Enable/disable container image streaming | `bool` | `true` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Version of GKE | `string` | `"1.28"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Version of GKE | `string` | `"1.27"` | no |
 | <a name="input_max_pods_per_node"></a> [max\_pods\_per\_node](#input\_max\_pods\_per\_node) | Maximum pods per node | `string` | `"32"` | no |
 | <a name="input_oauth_scopes"></a> [oauth\_scopes](#input\_oauth\_scopes) | Oauth Scopes to attach to the cluste | `list(string)` | <pre>[<br>  "https://www.googleapis.com/auth/cloud-platform",<br>  "https://www.googleapis.com/auth/devstorage.read_only",<br>  "https://www.googleapis.com/auth/logging.write",<br>  "https://www.googleapis.com/auth/monitoring.write"<br>]</pre> | no |
 | <a name="input_project"></a> [project](#input\_project) | GCP Project | `string` | n/a | yes |

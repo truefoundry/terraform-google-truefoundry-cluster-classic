@@ -79,7 +79,7 @@ variable "oauth_scopes" {
 
 variable "kubernetes_version" {
   description = "Version of GKE"
-  default     = "1.28"
+  default     = "1.27"
   type        = string
 
 }
@@ -98,7 +98,7 @@ variable "cluster_subnet_id" {
 }
 
 variable "cluster_networking_mode" {
-  description = "Networking mode for the cluster. Values can be VPC_NATIVE (recommended) or ROUTES"
+  description = "Networking mode for the cluster. Values can be VPC_NATIVE (recommended) or ROUTES. VPC_NATIVE is default after google-beta 5.0.0"
   type        = string
   default     = "VPC_NATIVE"
 }
