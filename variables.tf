@@ -79,7 +79,7 @@ variable "oauth_scopes" {
 
 variable "kubernetes_version" {
   description = "Version of GKE"
-  default     = "1.27"
+  default     = "1.28"
   type        = string
 
 }
