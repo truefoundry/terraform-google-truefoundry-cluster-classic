@@ -7,6 +7,7 @@ resource "google_container_cluster" "cluster" {
   location                    = var.region
   node_locations              = var.cluster_node_locations
   default_max_pods_per_node   = var.max_pods_per_node
+  deletion_protection         = var.deletion_protection
   remove_default_node_pool    = true
   initial_node_count          = 1
   networking_mode             = var.cluster_networking_mode
