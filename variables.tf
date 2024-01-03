@@ -81,7 +81,12 @@ variable "kubernetes_version" {
   description = "Version of GKE"
   default     = "1.27"
   type        = string
+}
 
+variable "deletion_protection" {
+  description = "Deletion protection enabled/disabled"
+  default     = false
+  type        = bool
 }
 
 ################################################################################
