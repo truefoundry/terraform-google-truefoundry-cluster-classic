@@ -19,6 +19,7 @@ variable "max_pods_per_node" {
   default     = "32"
   type        = string
 }
+
 variable "cluster_generic_node_config" {
   description = "Cluster Generic Node configuration"
   type = object({
@@ -33,7 +34,7 @@ variable "cluster_generic_node_config" {
     workload_metadata_config_mode = optional(string, "GKE_METADATA")
     service_account               = optional(string, "default")
     preemptible                   = optional(bool, false)
-    spot                          = optional(bool, false)
+    spot                          = optional(bool, true)
   })
   default = {
 
@@ -79,7 +80,7 @@ variable "oauth_scopes" {
 
 variable "kubernetes_version" {
   description = "Version of GKE"
-  default     = "1.27"
+  default     = "1.28"
   type        = string
 }
 
@@ -89,6 +90,46 @@ variable "deletion_protection" {
   type        = bool
 }
 
+variable "control_plane_enabled" {
+  description = "Whether control plane is enabled or not"
+  default     = false
+  type        = bool
+}
+
+variable "control_plane_pool_config" {
+  description = "Control plane node pool config"
+  type = object({
+    disk_size_gb = optional(string, "100")
+    disk_type    = optional(string, "pd-balanced")
+    machine_type = optional(string, "e2-medium")
+    autoscaling = optional(object({
+      min_node_count  = optional(number, 1)
+      max_node_count  = optional(number, 2)
+      location_policy = optional(string, "BALANCED")
+    }), {})
+    enable_secure_boot            = optional(bool, true)
+    enable_integrity_monitoring   = optional(bool, true)
+    auto_repair                   = optional(bool, true)
+    auto_upgrade                  = optional(bool, true)
+    workload_metadata_config_mode = optional(string, "GKE_METADATA")
+    service_account               = optional(string, "default")
+    labels = optional(map(string), {
+      "class.truefoundry.io/component" = "control-plane"
+    })
+    taints = optional(object(
+      {
+        key    = optional(string, "class.truefoundry.io/component")
+        value  = optional(string, "control-plane")
+        effect = optional(string, "NO_SCHEDULE")
+      }
+    ), {})
+    preemptible = optional(bool, false)
+    spot        = optional(bool, true)
+  })
+  default = {
+
+  }
+}
 ################################################################################
 # Network
 ################################################################################
@@ -97,6 +138,7 @@ variable "cluster_network_name" {
   description = "Network name for the cluster"
   type        = string
 }
+
 variable "cluster_subnet_id" {
   description = "Subnetwork name for the cluster."
   type        = string
@@ -146,7 +188,6 @@ variable "allowed_ip_ranges" {
 ################################################################################
 # Generic
 ################################################################################
-
 
 variable "tags" {
   description = "A map of tags to add to all resources"
