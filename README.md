@@ -7,15 +7,15 @@ Truefoundry Google Cloud Cluster Classic Module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | 5.10.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 5.10.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 5.18.0 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 5.18.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.10.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.10.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.18.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.18.0 |
 
 ## Modules
 
@@ -25,10 +25,10 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/5.10.0/docs/resources/google_container_cluster) | resource |
-| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/5.10.0/docs/resources/compute_firewall) | resource |
-| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/5.10.0/docs/resources/container_node_pool) | resource |
-| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/5.10.0/docs/resources/container_node_pool) | resource |
+| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/5.18.0/docs/resources/google_container_cluster) | resource |
+| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/compute_firewall) | resource |
+| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/container_node_pool) | resource |
+| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/container_node_pool) | resource |
 
 ## Inputs
 
