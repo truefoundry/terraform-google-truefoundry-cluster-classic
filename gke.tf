@@ -21,53 +21,53 @@ resource "google_container_cluster" "cluster" {
     enabled = true
     resource_limits {
       maximum       = var.cluster_nap_node_config.max_cpu
-      minimum       = 0
+      minimum       = 2
       resource_type = "cpu"
     }
     resource_limits {
       maximum       = var.cluster_nap_node_config.max_memory
-      minimum       = 0
+      minimum       = 4
       resource_type = "memory"
     }
     resource_limits {
-      maximum       = 256
+      maximum       = 4
       minimum       = 0
       resource_type = "nvidia-tesla-k80"
     }
     resource_limits {
       resource_type = "nvidia-tesla-p100"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-tesla-p4"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-tesla-v100"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-tesla-t4"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-tesla-a100"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-a100-80gb"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     resource_limits {
       resource_type = "nvidia-l4"
       minimum       = 0
-      maximum       = 256
+      maximum       = 4
     }
     auto_provisioning_defaults {
       service_account = "default"
