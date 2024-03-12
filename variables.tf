@@ -50,7 +50,7 @@ variable "cluster_nap_node_config" {
     enable_integrity_monitoring = optional(bool, true)
     autoscaling_profile         = optional(string, "OPTIMIZE_UTILIZATION")
     max_cpu                     = optional(number, 1024)
-    max_memory                  = optional(number, 1024)
+    max_memory                  = optional(number, 8172)
     auto_repair                 = optional(bool, true)
     auto_upgrade                = optional(bool, true)
     max_surge                   = optional(number, 1)
@@ -74,7 +74,10 @@ variable "oauth_scopes" {
     "https://www.googleapis.com/auth/cloud-platform",
     "https://www.googleapis.com/auth/devstorage.read_only",
     "https://www.googleapis.com/auth/logging.write",
-    "https://www.googleapis.com/auth/monitoring.write",
+    "https://www.googleapis.com/auth/monitoring",
+    "https://www.googleapis.com/auth/service.management.readonly",
+    "https://www.googleapis.com/auth/servicecontrol",
+    "https://www.googleapis.com/auth/trace.append"
   ]
 }
 
