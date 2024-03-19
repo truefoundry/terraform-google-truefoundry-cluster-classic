@@ -137,8 +137,14 @@ variable "control_plane_pool_config" {
 # Network
 ################################################################################
 
-variable "cluster_network_name" {
-  description = "Network name for the cluster"
+variable "shared_vpc" {
+  description = "Flag to enable shared VPC"
+  type        = bool
+  default     = false
+}
+
+variable "cluster_network_id" {
+  description = "Network ID for the cluster"
   type        = string
 }
 
@@ -159,27 +165,15 @@ variable "cluster_master_ipv4_cidr_block" {
 }
 
 variable "cluster_secondary_range_name" {
-  default     = "notpods"
+  default     = ""
   type        = string
   description = "VPC Secondary range name for pods"
-}
-
-variable "cluster_ipv4_cidr_block" {
-  description = "The IP address range for the cluster pod IPs. Set to blank to have a range chosen with the default size. Optional with cluster_ipv4_cidr_block"
-  type        = string
-  default     = ""
 }
 
 variable "services_secondary_range_name" {
   default     = ""
   type        = string
   description = "VPC Secondary range name for services"
-}
-
-variable "services_ipv4_cidr_block" {
-  default     = ""
-  description = "The IP address range of the services IPs in this cluster. Set to blank to have a range chosen with the default size. Optional with services_secondary_range_name"
-  type        = string
 }
 
 variable "allowed_ip_ranges" {

@@ -12,7 +12,7 @@ resource "google_container_cluster" "cluster" {
   initial_node_count          = 1
   networking_mode             = var.cluster_networking_mode
   min_master_version          = var.kubernetes_version
-  network                     = var.cluster_network_name
+  network                     = var.cluster_network_id
   subnetwork                  = var.cluster_subnet_id
   enable_shielded_nodes       = true
   enable_intranode_visibility = true
@@ -135,11 +135,8 @@ resource "google_container_cluster" "cluster" {
 
   # Configuration of cluster IP allocation for VPC-native clusters
   ip_allocation_policy {
-    cluster_secondary_range_name  = var.cluster_secondary_range_name != "" ? var.cluster_secondary_range_name : null
-    services_secondary_range_name = var.services_secondary_range_name != "" ? var.services_secondary_range_name : null
-
-    cluster_ipv4_cidr_block  = var.cluster_secondary_range_name == "" ? var.cluster_ipv4_cidr_block : null
-    services_ipv4_cidr_block = var.cluster_secondary_range_name == "" ? var.services_ipv4_cidr_block : null
+    cluster_secondary_range_name  = var.cluster_secondary_range_name
+    services_secondary_range_name = var.services_secondary_range_name
   }
 
   release_channel {
@@ -256,10 +253,11 @@ resource "google_container_node_pool" "control_plane_pool" {
 #  *****************************************/
 resource "google_compute_firewall" "fix_webhooks" {
   # count       = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules ? 1 : 0
+  count       = var.shared_vpc ? 0 : 1
   name        = "${var.cluster_name}-webhook"
   description = "Allow Nodes access to Control Plane"
   project     = var.project
-  network     = var.cluster_network_name
+  network     = var.cluster_network_id
   priority    = 1000
   direction   = "INGRESS"
 
