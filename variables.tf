@@ -192,6 +192,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "network_tags" {
+  description = "A list of network tags to add to all instances"
+  type        = list(string)
+  default     = []
+}
+
 variable "region" {
   description = "region"
   type        = string
