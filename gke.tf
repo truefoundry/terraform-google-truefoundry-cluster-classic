@@ -90,10 +90,15 @@ resource "google_container_cluster" "cluster" {
     }
     autoscaling_profile = var.cluster_nap_node_config.autoscaling_profile
   }
-
+  node_pool_auto_config {
+    network_tags {
+      tags = local.nap_network_tags
+    }
+  }
   logging_config {
     enable_components = ["SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER"]
   }
+
   maintenance_policy {
     recurring_window {
       start_time = "2023-10-01T09:00:00Z"
@@ -192,7 +197,7 @@ resource "google_container_node_pool" "generic" {
     spot            = var.cluster_generic_node_config.spot
     service_account = var.cluster_generic_node_config.service_account
 
-    tags = ["generic"]
+    tags = local.generic_network_tags
 
   }
 }
@@ -241,7 +246,7 @@ resource "google_container_node_pool" "control_plane_pool" {
     spot            = var.control_plane_pool_config.spot
     service_account = var.control_plane_pool_config.service_account
 
-    tags = ["tfy-control-plane"]
+    tags = local.control_plane_network_tags
 
   }
 }
