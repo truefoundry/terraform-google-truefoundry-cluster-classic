@@ -9,8 +9,13 @@ output "cluster_endpoint" {
 }
 
 output "cluster_id" {
-  description = "The name/id of the EKS cluster. Will block on cluster creation until the cluster is really ready"
+  description = "The id of the GKE cluster"
   value       = google_container_cluster.cluster.id
+}
+
+output "cluster_name" {
+  description = "The name of the GKE cluster"
+  value       = element(split("/", google_container_cluster.cluster.id), length(split("/", google_container_cluster.cluster.id)) - 1)
 }
 
 output "cluster_master_version" {
