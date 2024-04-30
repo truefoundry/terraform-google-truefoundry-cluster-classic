@@ -63,8 +63,9 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_cluster_endpoint"></a> [cluster\_endpoint](#output\_cluster\_endpoint) | Endpoint for your Kubernetes API server |
-| <a name="output_cluster_id"></a> [cluster\_id](#output\_cluster\_id) | The name/id of the EKS cluster. Will block on cluster creation until the cluster is really ready |
+| <a name="output_cluster_id"></a> [cluster\_id](#output\_cluster\_id) | The id of the GKE cluster |
 | <a name="output_cluster_master_version"></a> [cluster\_master\_version](#output\_cluster\_master\_version) | Master version for the cluster |
+| <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | The name of the GKE cluster |
 | <a name="output_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#output\_cluster\_secondary\_range\_name) | Cluster secondary range name for pod IPs |
 | <a name="output_services_secondary_range_name"></a> [services\_secondary\_range\_name](#output\_services\_secondary\_range\_name) | Cluster secondry range name for service IPs |
 <!-- END_TF_DOCS -->
