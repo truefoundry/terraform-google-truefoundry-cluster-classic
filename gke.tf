@@ -167,6 +167,7 @@ resource "google_container_cluster" "cluster" {
 ## Generic node pool
 ##########################################################################################
 resource "google_container_node_pool" "generic" {
+  count          = var.cluster_generic_node_config.enabled ? 1 : 0
   name           = "generic"
   cluster        = google_container_cluster.cluster.id
   location       = var.region

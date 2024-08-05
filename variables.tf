@@ -19,8 +19,9 @@ variable "max_pods_per_node" {
 }
 
 variable "cluster_generic_node_config" {
-  description = "Cluster Generic Node configuration"
+  description = "Cluster Generic Node configuration. This is disabled by default."
   type = object({
+    enabled                       = optional(bool, false)
     disk_size_gb                  = optional(string, "100")
     disk_type                     = optional(string, "pd-balanced")
     machine_type                  = optional(string, "e2-medium")
