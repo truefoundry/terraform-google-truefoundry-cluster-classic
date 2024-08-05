@@ -6,16 +6,16 @@ Truefoundry Google Cloud Cluster Classic Module
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.4 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | 5.18.0 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 5.18.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.8 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 5.39.1 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 5.39.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 5.18.0 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.18.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 5.39.1 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 5.39.1 |
 
 ## Modules
 
@@ -25,17 +25,17 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/5.18.0/docs/resources/google_container_cluster) | resource |
-| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/compute_firewall) | resource |
-| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/container_node_pool) | resource |
-| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/5.18.0/docs/resources/container_node_pool) | resource |
+| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/5.39.1/docs/resources/google_container_cluster) | resource |
+| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/5.39.1/docs/resources/compute_firewall) | resource |
+| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/5.39.1/docs/resources/container_node_pool) | resource |
+| [google_container_node_pool.generic](https://registry.terraform.io/providers/hashicorp/google/5.39.1/docs/resources/container_node_pool) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_ip_ranges"></a> [allowed\_ip\_ranges](#input\_allowed\_ip\_ranges) | Allowed IP ranges to connect to master | `list(string)` | <pre>[<br/>  "0.0.0.0/0"<br/>]</pre> | no |
-| <a name="input_cluster_generic_node_config"></a> [cluster\_generic\_node\_config](#input\_cluster\_generic\_node\_config) | Cluster Generic Node configuration | <pre>object({<br/>    disk_size_gb                  = optional(string, "100")<br/>    disk_type                     = optional(string, "pd-balanced")<br/>    machine_type                  = optional(string, "e2-medium")<br/>    enable_secure_boot            = optional(bool, true)<br/>    enable_integrity_monitoring   = optional(bool, true)<br/>    auto_repair                   = optional(bool, true)<br/>    auto_upgrade                  = optional(bool, true)<br/>    node_count                    = optional(number, 1)<br/>    workload_metadata_config_mode = optional(string, "GKE_METADATA")<br/>    service_account               = optional(string, "default")<br/>    preemptible                   = optional(bool, false)<br/>    spot                          = optional(bool, true)<br/>  })</pre> | `{}` | no |
+| <a name="input_allowed_ip_ranges"></a> [allowed\_ip\_ranges](#input\_allowed\_ip\_ranges) | Allowed IP ranges to connect to master | `list(string)` | <pre>[<br>  "0.0.0.0/0"<br>]</pre> | no |
+| <a name="input_cluster_generic_node_config"></a> [cluster\_generic\_node\_config](#input\_cluster\_generic\_node\_config) | Cluster Generic Node configuration. This is disabled by default. | <pre>object({<br>    enabled                       = optional(bool, false)<br>    disk_size_gb                  = optional(string, "100")<br>    disk_type                     = optional(string, "pd-balanced")<br>    machine_type                  = optional(string, "e2-medium")<br>    enable_secure_boot            = optional(bool, true)<br>    enable_integrity_monitoring   = optional(bool, true)<br>    auto_repair                   = optional(bool, true)<br>    auto_upgrade                  = optional(bool, true)<br>    node_count                    = optional(number, 1)<br>    workload_metadata_config_mode = optional(string, "GKE_METADATA")<br>    service_account               = optional(string, "default")<br>    preemptible                   = optional(bool, false)<br>    spot                          = optional(bool, true)<br>  })</pre> | `{}` | no |
 | <a name="input_cluster_master_ipv4_cidr_block"></a> [cluster\_master\_ipv4\_cidr\_block](#input\_cluster\_master\_ipv4\_cidr\_block) | Master nodes ipv4 cidr | `string` | n/a | yes |
 | <a name="input_cluster_name"></a> [cluster\_name](#input\_cluster\_name) | Name of the cluster | `string` | n/a | yes |
 | <a name="input_cluster_nap_node_config"></a> [cluster\_nap\_node\_config](#input\_cluster\_nap\_node\_config) | Cluster NAP Node configuration | <pre>object({<br/>    disk_size_gb                = optional(string, "300")<br/>    disk_type                   = optional(string, "pd-balanced")<br/>    enable_secure_boot          = optional(bool, true)<br/>    enable_integrity_monitoring = optional(bool, true)<br/>    autoscaling_profile         = optional(string, "OPTIMIZE_UTILIZATION")<br/>    max_cpu                     = optional(number, 1024)<br/>    max_memory                  = optional(number, 8172)<br/>    auto_repair                 = optional(bool, true)<br/>    auto_upgrade                = optional(bool, true)<br/>    max_surge                   = optional(number, 1)<br/>    max_unavailable             = optional(number, 0)<br/>  })</pre> | `{}` | no |
