@@ -197,8 +197,8 @@ resource "google_container_node_pool" "generic" {
     spot            = var.cluster_generic_node_config.spot
     service_account = var.cluster_generic_node_config.service_account
 
-    tags = local.generic_network_tags
-
+    tags            = local.generic_network_tags
+    resource_labels = local.generic_tags
   }
 }
 
