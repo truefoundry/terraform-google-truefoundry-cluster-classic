@@ -170,6 +170,7 @@ resource "google_container_node_pool" "generic" {
   name           = "generic"
   cluster        = google_container_cluster.cluster.id
   location       = var.region
+  project        = var.project
   node_locations = var.cluster_node_locations
   management {
     auto_repair  = var.cluster_generic_node_config.auto_repair
@@ -209,6 +210,7 @@ resource "google_container_node_pool" "control_plane_pool" {
   count          = var.control_plane_enabled ? 1 : 0
   name           = "control-plane"
   cluster        = google_container_cluster.cluster.id
+  project        = var.project
   location       = var.region
   node_locations = var.cluster_node_locations
   management {
