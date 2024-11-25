@@ -1,9 +1,15 @@
 ################################################################################
-# Cluster
+# General Cluster Configuration
 ################################################################################
 
+variable "use_existing_cluster" {
+  description = "Flag to enable the use of an existing GKE cluster or create a new one"
+  type        = bool
+  default     = false
+}
+
 variable "cluster_name" {
-  description = "Name of the cluster"
+  description = "Name of the cluster. If use_existing_cluster is enabled name is used to fetch details of existing cluster"
   type        = string
 }
 
@@ -13,13 +19,31 @@ variable "cluster_node_locations" {
 }
 
 variable "max_pods_per_node" {
-  description = "Maximum pods per node"
+  description = "Maximum number of pods per node in this cluster. Must be between 8 and 110"
   default     = "32"
   type        = string
 }
 
+################################################################################
+# Node Pool Configurations
+################################################################################
+
 variable "cluster_generic_node_config" {
-  description = "Cluster Generic Node configuration"
+  description = <<-EOT
+    Configuration for the generic node pool. This includes:
+    - disk_size_gb: Size of the disk attached to each node
+    - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd)
+    - machine_type: The name of a Google Compute Engine machine type
+    - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software
+    - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity
+    - auto_repair: Flag to enable auto repair for the nodes
+    - auto_upgrade: Flag to enable auto upgrade for the nodes
+    - node_count: The number of nodes per instance group
+    - workload_metadata_config_mode: How to expose metadata to workloads running on the node
+    - service_account: The Google Cloud Platform Service Account
+    - preemptible: Flag to enable preemptible nodes
+    - spot: Flag to enable spot instances
+  EOT
   type = object({
     disk_size_gb                  = optional(string, "100")
     disk_type                     = optional(string, "pd-balanced")
@@ -34,9 +58,7 @@ variable "cluster_generic_node_config" {
     preemptible                   = optional(bool, false)
     spot                          = optional(bool, true)
   })
-  default = {
-
-  }
+  default = {}
 }
 
 variable "cluster_nap_node_config" {
@@ -132,7 +154,7 @@ variable "control_plane_pool_config" {
   }
 }
 ################################################################################
-# Network
+# Network Configuration
 ################################################################################
 
 variable "shared_vpc" {
@@ -181,11 +203,11 @@ variable "allowed_ip_ranges" {
 }
 
 ################################################################################
-# Generic
+# Generic Configuration
 ################################################################################
 
 variable "tags" {
-  description = "A map of tags to add to all resources"
+  description = "A map of tags to add to all resources. Tags are key-value pairs used for grouping and filtering"
   type        = map(string)
   default     = {}
 }
@@ -205,3 +227,5 @@ variable "project" {
   description = "GCP Project"
   type        = string
 }
+
+
