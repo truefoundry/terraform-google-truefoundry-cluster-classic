@@ -18,7 +18,7 @@ Few Modules are shifted to using count block to support this feature.
     terraform state mv 'google_container_node_pool.control_plane_pool' 'google_container_node_pool.control_plane_pool[0]' # If control plane is enabled, else skip this step
     ```
 
-3. Run terraform plan to check if there are is diff
+3. Run terraform plan to check if there is any drift
 
     ```bash
     terraform plan

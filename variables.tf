@@ -8,10 +8,6 @@ variable "use_existing_cluster" {
   default     = false
 }
 
-variable "cluster_name" {
-  description = "Name of the cluster. If use_existing_cluster is enabled name is used to fetch details of existing cluster"
-  type        = string
-}
 
 variable "cluster_node_locations" {
   description = "AZ for nodes - this should match the region"
@@ -28,10 +24,9 @@ variable "max_pods_per_node" {
 # Cluster Configuration
 ################################################################################
 
-variable "tags" {
-  description = "A map of tags to add to all resources. Tags are key-value pairs used for grouping and filtering"
-  type        = map(string)
-  default     = {}
+variable "cluster_name" {
+  description = "Name of the cluster. If use_existing_cluster is enabled cluster_name is used to fetch details of existing cluster"
+  type        = string
 }
 
 variable "network_tags" {
@@ -49,7 +44,11 @@ variable "project" {
   description = "GCP Project"
   type        = string
 }
-
+variable "tags" {
+  description = "A map of tags to add to all resources. Tags are key-value pairs used for grouping and filtering"
+  type        = map(string)
+  default     = {}
+}
 
 ################################################################################
 # Node Pool Configurations
