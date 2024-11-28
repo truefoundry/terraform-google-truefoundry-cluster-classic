@@ -1,5 +1,5 @@
 ################################################################################
-# General Cluster Configuration
+# Existing Cluster Configuration
 ################################################################################
 
 variable "use_existing_cluster" {
@@ -19,10 +19,37 @@ variable "cluster_node_locations" {
 }
 
 variable "max_pods_per_node" {
-  description = "Maximum number of pods per node in this cluster. Must be between 8 and 110"
+  description = "Maximum number of pods per node in this cluster."
   default     = "32"
   type        = string
 }
+
+################################################################################
+# General Cluster Configuration
+################################################################################
+
+variable "tags" {
+  description = "A map of tags to add to all resources. Tags are key-value pairs used for grouping and filtering"
+  type        = map(string)
+  default     = {}
+}
+
+variable "network_tags" {
+  description = "A list of network tags to add to all instances"
+  type        = list(string)
+  default     = []
+}
+
+variable "region" {
+  description = "region"
+  type        = string
+}
+
+variable "project" {
+  description = "GCP Project"
+  type        = string
+}
+
 
 ################################################################################
 # Node Pool Configurations
@@ -31,18 +58,18 @@ variable "max_pods_per_node" {
 variable "cluster_generic_node_config" {
   description = <<-EOT
     Configuration for the generic node pool. This includes:
-    - disk_size_gb: Size of the disk attached to each node
-    - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd)
-    - machine_type: The name of a Google Compute Engine machine type
-    - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software
-    - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity
-    - auto_repair: Flag to enable auto repair for the nodes
-    - auto_upgrade: Flag to enable auto upgrade for the nodes
-    - node_count: The number of nodes per instance group
-    - workload_metadata_config_mode: How to expose metadata to workloads running on the node
-    - service_account: The Google Cloud Platform Service Account
-    - preemptible: Flag to enable preemptible nodes
-    - spot: Flag to enable spot instances
+    - disk_size_gb: Size of the disk attached to each node (default: "100")
+    - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd) (default: "pd-balanced")
+    - machine_type: The name of a Google Compute Engine machine type (default: "e2-medium")
+    - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software (default: true)
+    - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity (default: true)
+    - auto_repair: Flag to enable auto repair for the nodes (default: true)
+    - auto_upgrade: Flag to enable auto upgrade for the nodes (default: true)
+    - node_count: The number of nodes per instance group (default: 1)
+    - workload_metadata_config_mode: How to expose metadata to workloads running on the node (default: "GKE_METADATA")
+    - service_account: The Google Cloud Platform Service Account (default: "default")
+    - preemptible: Flag to enable preemptible nodes (default: false)
+    - spot: Flag to enable spot instances (default: true)
   EOT
   type = object({
     disk_size_gb                  = optional(string, "100")
@@ -62,7 +89,20 @@ variable "cluster_generic_node_config" {
 }
 
 variable "cluster_nap_node_config" {
-  description = "Cluster NAP Node configuration"
+  description = <<-EOT
+    Configuration for the NAP node pool. This includes:
+    - disk_size_gb: Size of the disk attached to each node (default: "300")
+    - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd) (default: "pd-balanced")
+    - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software (default: true)
+    - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity (default: true)
+    - autoscaling_profile: Profile for autoscaling optimization (default: "OPTIMIZE_UTILIZATION")
+    - max_cpu: Maximum CPU cores allowed per node (default: 1024)
+    - max_memory: Maximum memory in MB allowed per node (default: 8172)
+    - auto_repair: Flag to enable auto repair for the nodes (default: true)
+    - auto_upgrade: Flag to enable auto upgrade for the nodes (default: true)
+    - max_surge: Maximum number of nodes that can be created beyond the current size during updates (default: 1)
+    - max_unavailable: Maximum number of nodes that can be unavailable during updates (default: 0)
+  EOT
   type = object({
     disk_size_gb                = optional(string, "300")
     disk_type                   = optional(string, "pd-balanced")
@@ -201,31 +241,3 @@ variable "allowed_ip_ranges" {
   default     = ["0.0.0.0/0"]
   type        = list(string)
 }
-
-################################################################################
-# Generic Configuration
-################################################################################
-
-variable "tags" {
-  description = "A map of tags to add to all resources. Tags are key-value pairs used for grouping and filtering"
-  type        = map(string)
-  default     = {}
-}
-
-variable "network_tags" {
-  description = "A list of network tags to add to all instances"
-  type        = list(string)
-  default     = []
-}
-
-variable "region" {
-  description = "region"
-  type        = string
-}
-
-variable "project" {
-  description = "GCP Project"
-  type        = string
-}
-
-
