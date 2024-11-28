@@ -170,7 +170,7 @@ resource "google_container_cluster" "cluster" {
 resource "google_container_node_pool" "generic" {
   count          = var.use_existing_cluster ? 0 : 1
   name           = "generic"
-  cluster        = var.use_existing_cluster ? data.google_container_cluster.existing_cluster[0].id : google_container_cluster.cluster[0].id
+  cluster        = google_container_cluster.cluster[0].id
   location       = var.region
   project        = var.project
   node_locations = var.cluster_node_locations
@@ -211,7 +211,7 @@ resource "google_container_node_pool" "generic" {
 resource "google_container_node_pool" "control_plane_pool" {
   count          = var.control_plane_enabled ? 1 : 0
   name           = "control-plane"
-  cluster        = var.use_existing_cluster ? data.google_container_cluster.existing_cluster[0].id : google_container_cluster.cluster[0].id
+  cluster        = google_container_cluster.cluster[0].id
   project        = var.project
   location       = var.region
   node_locations = var.cluster_node_locations
@@ -262,7 +262,7 @@ resource "google_container_node_pool" "control_plane_pool" {
 #  *****************************************/
 resource "google_compute_firewall" "fix_webhooks" {
   # count       = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules ? 1 : 0
-  count       = var.use_existing_cluster ? 0 : var.shared_vpc ? 0 : 1
+  count       = var.use_existing_cluster && var.shared_vpc ? 0 : 1
   name        = "${var.cluster_name}-webhook"
   description = "Allow Nodes access to Control Plane"
   project     = var.project
