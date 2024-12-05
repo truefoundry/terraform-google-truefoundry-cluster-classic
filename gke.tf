@@ -262,7 +262,7 @@ resource "google_container_node_pool" "control_plane_pool" {
 #  *****************************************/
 resource "google_compute_firewall" "fix_webhooks" {
   # count       = var.add_cluster_firewall_rules || var.add_master_webhook_firewall_rules ? 1 : 0
-  count       = var.use_existing_cluster && var.shared_vpc ? 0 : 1
+  count       = var.use_existing_cluster || var.shared_vpc ? 0 : 1
   name        = "${var.cluster_name}-webhook"
   description = "Allow Nodes access to Control Plane"
   project     = var.project
