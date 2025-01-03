@@ -59,7 +59,7 @@ variable "cluster_generic_node_config" {
     Configuration for the generic node pool. This includes:
     - disk_size_gb: Size of the disk attached to each node (default: "100")
     - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd) (default: "pd-balanced")
-    - machine_type: The name of a Google Compute Engine machine type (default: "e2-medium")
+    - machine_type: The name of a Google Compute Engine machine type (default: "e2-standard-4")
     - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software (default: true)
     - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity (default: true)
     - auto_repair: Flag to enable auto repair for the nodes (default: true)
@@ -73,7 +73,7 @@ variable "cluster_generic_node_config" {
   type = object({
     disk_size_gb                  = optional(string, "100")
     disk_type                     = optional(string, "pd-balanced")
-    machine_type                  = optional(string, "e2-medium")
+    machine_type                  = optional(string, "e2-standard-4")
     enable_secure_boot            = optional(bool, true)
     enable_integrity_monitoring   = optional(bool, true)
     auto_repair                   = optional(bool, true)
@@ -163,7 +163,7 @@ variable "control_plane_pool_config" {
   type = object({
     disk_size_gb = optional(string, "100")
     disk_type    = optional(string, "pd-balanced")
-    machine_type = optional(string, "e2-medium")
+    machine_type = optional(string, "e2-standard-4")
     autoscaling = optional(object({
       min_node_count  = optional(number, 1)
       max_node_count  = optional(number, 2)
