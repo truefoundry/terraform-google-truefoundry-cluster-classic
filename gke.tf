@@ -22,12 +22,12 @@ resource "google_container_cluster" "cluster" {
     enabled = true
     resource_limits {
       maximum       = var.cluster_nap_node_config.max_cpu
-      minimum       = 0
+      minimum       = 4
       resource_type = "cpu"
     }
     resource_limits {
       maximum       = var.cluster_nap_node_config.max_memory
-      minimum       = 0
+      minimum       = 16
       resource_type = "memory"
     }
     resource_limits {
