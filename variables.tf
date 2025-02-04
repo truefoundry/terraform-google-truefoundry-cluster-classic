@@ -176,11 +176,11 @@ variable "control_plane_pool_config" {
     workload_metadata_config_mode = optional(string, "GKE_METADATA")
     service_account               = optional(string, "default")
     labels = optional(map(string), {
-      "class.truefoundry.io/component" = "control-plane"
+      "class.truefoundry.com/component" = "control-plane"
     })
     taints = optional(object(
       {
-        key    = optional(string, "class.truefoundry.io/component")
+        key    = optional(string, "class.truefoundry.com/component")
         value  = optional(string, "control-plane")
         effect = optional(string, "NO_SCHEDULE")
       }
