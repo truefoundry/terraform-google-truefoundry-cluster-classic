@@ -209,8 +209,8 @@ resource "google_container_node_pool" "generic" {
 ## Control plane node pool
 ##########################################################################################
 resource "google_container_node_pool" "control_plane_pool" {
-  count          = var.control_plane_enabled ? 1 : 0
-  name           = "control-plane"
+  count          = var.use_existing_cluster ? 0: var.control_plane_enabled ? 1 : 0
+  name           = "tfy-control-plane"
   cluster        = google_container_cluster.cluster[0].id
   project        = var.project
   location       = var.region
@@ -255,6 +255,56 @@ resource "google_container_node_pool" "control_plane_pool" {
   }
 }
 
+
+##########################################################################################
+## Critical node pool
+##########################################################################################
+resource "google_container_node_pool" "critical_pool" {
+  count          = var.control_plane_enabled ? 1 : 0
+  name           = "tfy-critical"
+  cluster        = google_container_cluster.cluster[0].id
+  project        = var.project
+  location       = var.region
+  node_locations = var.cluster_node_locations
+  management {
+    auto_repair  = var.critical_pool_config.auto_repair
+    auto_upgrade = var.critical_pool_config.auto_upgrade
+  }
+  autoscaling {
+    min_node_count  = var.critical_pool_config.autoscaling.min_node_count
+    max_node_count  = var.critical_pool_config.autoscaling.max_node_count
+    location_policy = var.critical_pool_config.autoscaling.location_policy
+  }
+  node_config {
+    disk_size_gb = var.critical_pool_config.disk_size_gb
+    disk_type    = var.critical_pool_config.disk_type
+    gcfs_config {
+      enabled = var.enable_container_image_streaming
+    }
+    labels = var.critical_pool_config.labels
+    taint {
+      key    = var.critical_pool_config.taints.key
+      value  = var.critical_pool_config.taints.value
+      effect = var.critical_pool_config.taints.effect
+    }
+    resource_labels = local.critical_pool_tags
+    machine_type    = var.critical_pool_config.machine_type
+    shielded_instance_config {
+      enable_secure_boot          = var.critical_pool_config.enable_secure_boot
+      enable_integrity_monitoring = var.critical_pool_config.enable_integrity_monitoring
+    }
+    workload_metadata_config {
+      mode = var.critical_pool_config.workload_metadata_config_mode
+    }
+    oauth_scopes    = var.oauth_scopes
+    preemptible     = var.critical_pool_config.preemptible
+    spot            = var.critical_pool_config.spot
+    service_account = var.critical_pool_config.service_account
+
+    tags = local.critical_pool_network_tags
+
+  }
+}
 
 /******************************************
   CRD are broken in GKE
