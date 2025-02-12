@@ -209,7 +209,7 @@ resource "google_container_node_pool" "generic" {
 ## Control plane node pool
 ##########################################################################################
 resource "google_container_node_pool" "control_plane_pool" {
-  count          = var.use_existing_cluster ? 0: var.control_plane_enabled ? 1 : 0
+  count          = var.use_existing_cluster ? 0 : var.control_plane_enabled ? 1 : 0
   name           = "tfy-control-plane"
   cluster        = google_container_cluster.cluster[0].id
   project        = var.project
@@ -260,7 +260,7 @@ resource "google_container_node_pool" "control_plane_pool" {
 ## Critical node pool
 ##########################################################################################
 resource "google_container_node_pool" "critical_pool" {
-  count          = var.control_plane_enabled ? 1 : 0
+  count          = var.use_existing_cluster ? 0 : 1
   name           = "tfy-critical"
   cluster        = google_container_cluster.cluster[0].id
   project        = var.project
