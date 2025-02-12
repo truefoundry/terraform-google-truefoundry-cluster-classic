@@ -186,7 +186,42 @@ variable "control_plane_pool_config" {
       }
     ), {})
     preemptible = optional(bool, false)
-    spot        = optional(bool, true)
+    spot        = optional(bool, false)
+  })
+  default = {
+
+  }
+}
+
+variable "critical_pool_config" {
+  description = "Critical node pool config"
+  type = object({
+    disk_size_gb = optional(string, "100")
+    disk_type    = optional(string, "pd-balanced")
+    machine_type = optional(string, "e2-standard-4")
+    autoscaling = optional(object({
+      min_node_count  = optional(number, 1)
+      max_node_count  = optional(number, 2)
+      location_policy = optional(string, "BALANCED")
+    }), {})
+    enable_secure_boot            = optional(bool, true)
+    enable_integrity_monitoring   = optional(bool, true)
+    auto_repair                   = optional(bool, true)
+    auto_upgrade                  = optional(bool, true)
+    workload_metadata_config_mode = optional(string, "GKE_METADATA")
+    service_account               = optional(string, "default")
+    labels = optional(map(string), {
+      "class.truefoundry.com/component" = "critical"
+    })
+    taints = optional(object(
+      {
+        key    = optional(string, "class.truefoundry.com/component")
+        value  = optional(string, "critical")
+        effect = optional(string, "NO_SCHEDULE")
+      }
+    ), {})
+    preemptible = optional(bool, false)
+    spot        = optional(bool, false)
   })
   default = {
 
