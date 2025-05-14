@@ -165,47 +165,6 @@ resource "google_container_cluster" "cluster" {
 # See: https://registry.terraform.io/providers/hashicorp/google/4.1.0/docs/resources/container_node_pool
 
 ##########################################################################################
-## Generic node pool
-##########################################################################################
-resource "google_container_node_pool" "generic" {
-  count          = var.use_existing_cluster ? 0 : 1
-  name           = "generic"
-  cluster        = google_container_cluster.cluster[0].id
-  location       = var.region
-  project        = var.project
-  node_locations = var.cluster_node_locations
-  management {
-    auto_repair  = var.cluster_generic_node_config.auto_repair
-    auto_upgrade = var.cluster_generic_node_config.auto_upgrade
-  }
-  node_count = var.cluster_generic_node_config.node_count
-
-  node_config {
-    disk_size_gb = var.cluster_generic_node_config.disk_size_gb
-    disk_type    = var.cluster_generic_node_config.disk_type
-    gcfs_config {
-      enabled = var.enable_container_image_streaming
-    }
-
-    machine_type = var.cluster_generic_node_config.machine_type
-    shielded_instance_config {
-      enable_secure_boot          = var.cluster_generic_node_config.enable_secure_boot
-      enable_integrity_monitoring = var.cluster_generic_node_config.enable_integrity_monitoring
-    }
-    workload_metadata_config {
-      mode = var.cluster_generic_node_config.workload_metadata_config_mode
-    }
-    oauth_scopes    = var.oauth_scopes
-    preemptible     = var.cluster_generic_node_config.preemptible
-    spot            = var.cluster_generic_node_config.spot
-    service_account = var.cluster_generic_node_config.service_account
-
-    tags            = local.generic_network_tags
-    resource_labels = local.generic_tags
-  }
-}
-
-##########################################################################################
 ## Control plane node pool
 ##########################################################################################
 resource "google_container_node_pool" "control_plane_pool" {
