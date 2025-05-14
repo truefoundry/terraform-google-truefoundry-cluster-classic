@@ -54,39 +54,6 @@ variable "tags" {
 # Node Pool Configurations
 ################################################################################
 
-variable "cluster_generic_node_config" {
-  description = <<-EOT
-    Configuration for the generic node pool. This includes:
-    - disk_size_gb: Size of the disk attached to each node (default: "100")
-    - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd) (default: "pd-balanced")
-    - machine_type: The name of a Google Compute Engine machine type (default: "e2-standard-4")
-    - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software (default: true)
-    - enable_integrity_monitoring: Enables monitoring and attestation of the boot integrity (default: true)
-    - auto_repair: Flag to enable auto repair for the nodes (default: true)
-    - auto_upgrade: Flag to enable auto upgrade for the nodes (default: true)
-    - node_count: The number of nodes per instance group (default: 1)
-    - workload_metadata_config_mode: How to expose metadata to workloads running on the node (default: "GKE_METADATA")
-    - service_account: The Google Cloud Platform Service Account (default: "default")
-    - preemptible: Flag to enable preemptible nodes (default: false)
-    - spot: Flag to enable spot instances (default: true)
-  EOT
-  type = object({
-    disk_size_gb                  = optional(string, "100")
-    disk_type                     = optional(string, "pd-balanced")
-    machine_type                  = optional(string, "e2-standard-4")
-    enable_secure_boot            = optional(bool, true)
-    enable_integrity_monitoring   = optional(bool, true)
-    auto_repair                   = optional(bool, true)
-    auto_upgrade                  = optional(bool, true)
-    node_count                    = optional(number, 1)
-    workload_metadata_config_mode = optional(string, "GKE_METADATA")
-    service_account               = optional(string, "default")
-    preemptible                   = optional(bool, false)
-    spot                          = optional(bool, true)
-  })
-  default = {}
-}
-
 variable "cluster_nap_node_config" {
   description = <<-EOT
     Configuration for the NAP node pool. This includes:
