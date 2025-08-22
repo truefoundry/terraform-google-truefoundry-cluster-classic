@@ -29,6 +29,7 @@ resource "google_container_cluster" "cluster" {
       enable_secure_boot          = var.cluster_nap_node_config.enable_secure_boot
       enable_integrity_monitoring = var.cluster_nap_node_config.enable_integrity_monitoring
     }
+    tags = local.nap_network_tags
   }
   cluster_autoscaling {
     enabled = true
