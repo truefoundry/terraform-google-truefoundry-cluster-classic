@@ -19,11 +19,11 @@ resource "google_container_cluster" "cluster" {
   enable_intranode_visibility = true
   resource_labels             = local.tags
 
-  # This is the default node config for the cluster. As per GKE docs "We can't create a cluster with no node pool defined, but we want to only use separately managed node pools. So we create the smallest possible default node pool and immediately delete it." - This is configuration for the default node pool to align with rest of the node pools.
+  # # This is the default node config for the cluster. As per GKE docs "We can't create a cluster with no node pool defined, but we want to only use separately managed node pools. So we create the smallest possible default node pool and immediately delete it." - This is configuration for the default node pool to align with rest of the node pools.
   node_config {
       service_account = "default"
       oauth_scopes    = var.oauth_scopes
-      disk_size_gb       = var.cluster_nap_node_config.disk_size_gb
+      disk_size_gb    = var.cluster_nap_node_config.disk_size_gb
       disk_type       = var.cluster_nap_node_config.disk_type
     shielded_instance_config {
       enable_secure_boot          = var.cluster_nap_node_config.enable_secure_boot
