@@ -7,15 +7,15 @@ Truefoundry Google Cloud Cluster Classic Module
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.4 |
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.21 |
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | ~> 6.21 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | 6.47 |
+| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | 6.47 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 6.21 |
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | ~> 6.21 |
+| <a name="provider_google"></a> [google](#provider\_google) | 6.47 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 6.47 |
 
 ## Modules
 
@@ -25,11 +25,11 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/google_container_cluster) | resource |
-| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/compute_firewall) | resource |
-| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool) | resource |
-| [google_container_node_pool.critical_pool](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_node_pool) | resource |
-| [google_container_cluster.existing_cluster](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/container_cluster) | data source |
+| [google-beta_google_container_cluster.cluster](https://registry.terraform.io/providers/hashicorp/google-beta/6.47/docs/resources/google_container_cluster) | resource |
+| [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/compute_firewall) | resource |
+| [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/container_node_pool) | resource |
+| [google_container_node_pool.critical_pool](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/container_node_pool) | resource |
+| [google_container_cluster.existing_cluster](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/data-sources/container_cluster) | data source |
 
 ## Inputs
 
