@@ -44,17 +44,12 @@ resource "google_container_cluster" "cluster" {
       resource_type = "memory"
     }
     resource_limits {
-      maximum       = 256
+      resource_type = "nvidia-tesla-p4"
       minimum       = 0
-      resource_type = "nvidia-tesla-k80"
+      maximum       = 256
     }
     resource_limits {
       resource_type = "nvidia-tesla-p100"
-      minimum       = 0
-      maximum       = 256
-    }
-    resource_limits {
-      resource_type = "nvidia-tesla-p4"
       minimum       = 0
       maximum       = 256
     }
@@ -80,6 +75,26 @@ resource "google_container_cluster" "cluster" {
     }
     resource_limits {
       resource_type = "nvidia-l4"
+      minimum       = 0
+      maximum       = 256
+    }
+    resource_limits {
+      resource_type = "nvidia-h100-80gb"
+      minimum       = 0
+      maximum       = 256
+    }
+    resource_limits {
+      resource_type = "nvidia-h100-mega-80gb"
+      minimum       = 0
+      maximum       = 256
+    }
+    resource_limits {
+      resource_type = "nvidia-h200-141gb"
+      minimum       = 0
+      maximum       = 256
+    }
+    resource_limits {
+      resource_type = "nvidia-b200"
       minimum       = 0
       maximum       = 256
     }
