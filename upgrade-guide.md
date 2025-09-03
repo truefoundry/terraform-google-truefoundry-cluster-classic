@@ -1,7 +1,6 @@
 # terraform-google-truefoundry-cluster-autopilot
 
 This guide will help you to migrate your terraform code across versions. Keeping your terraform state to the latest version is always recommeneded
-
 ## Upgrade guide from 0.3.x to 0.4.x
 
 Changes, we introduced `use_existing_cluster` variable, which allows you to use an existing cluster.
@@ -23,3 +22,9 @@ Few Modules are shifted to using count block to support this feature.
     ```bash
     terraform plan
     ```
+4. After enablement of node_config in 0.4.1, if you face issue of cluster being replaced - add the variable
+```
+  default_node_pool_config = {
+    "enable_spot" = false # or true
+  }
+```
