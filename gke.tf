@@ -21,15 +21,17 @@ resource "google_container_cluster" "cluster" {
 
   # # This is the default node config for the cluster. As per GKE docs "We can't create a cluster with no node pool defined, but we want to only use separately managed node pools. So we create the smallest possible default node pool and immediately delete it." - This is configuration for the default node pool to align with rest of the node pools.
   node_config {
-    service_account = "default"
+    service_account = var.default_node_pool_config.service_account
+    spot            = var.default_node_pool_config.enable_spot
     oauth_scopes    = var.oauth_scopes
-    disk_size_gb    = var.cluster_nap_node_config.disk_size_gb
-    disk_type       = var.cluster_nap_node_config.disk_type
+    disk_size_gb    = var.default_node_pool_config.disk_size_gb
+    disk_type       = var.default_node_pool_config.disk_type
     shielded_instance_config {
-      enable_secure_boot          = var.cluster_nap_node_config.enable_secure_boot
-      enable_integrity_monitoring = var.cluster_nap_node_config.enable_integrity_monitoring
+      enable_secure_boot          = var.default_node_pool_config.secure_boot
+      enable_integrity_monitoring = var.default_node_pool_config.integrity_monitoring
     }
-    tags = local.nap_network_tags
+    tags            = local.nap_network_tags
+    resource_labels = local.tags
   }
   cluster_autoscaling {
     enabled = true
@@ -125,7 +127,7 @@ resource "google_container_cluster" "cluster" {
     }
   }
   logging_config {
-    enable_components = ["SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER"]
+    enable_components = var.logging_config.enable_components
   }
 
   maintenance_policy {
@@ -186,6 +188,12 @@ resource "google_container_cluster" "cluster" {
         enabled = var.enable_container_image_streaming
       }
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      node_config
+    ]
   }
 }
 
