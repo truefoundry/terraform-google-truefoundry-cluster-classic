@@ -155,7 +155,7 @@ resource "google_container_cluster" "cluster" {
     workload_pool = "${var.project}.svc.id.goog"
   }
   private_cluster_config {
-    enable_private_endpoint = false
+    enable_private_endpoint = !var.cluster_endpoint_public_access
     enable_private_nodes    = true
     master_ipv4_cidr_block  = var.cluster_master_ipv4_cidr_block
     master_global_access_config {
