@@ -45,6 +45,12 @@ variable "project" {
   type        = string
 }
 
+variable "cluster_endpoint_public_access" {
+  description = "GCP Public CIDRs access enabled. This is kept true initially so that other Truefoundry terraform modules which run on user local can access the api server endpoint."
+  type        = bool
+  default     = true
+}
+
 variable "default_node_pool_config" {
   description = "Default node pool config"
   type = object({
