@@ -189,6 +189,12 @@ resource "google_container_cluster" "cluster" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      node_config
+    ]
+  }
 }
 
 # Customizable node pool
