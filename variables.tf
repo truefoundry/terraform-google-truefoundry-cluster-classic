@@ -150,6 +150,11 @@ variable "kubernetes_version" {
   description = "Version of GKE"
   default     = "1.33"
   type        = string
+
+  validation {
+    condition     = contains(["1.32", "1.33", "1.34"], var.kubernetes_version)
+    error_message = "kubernetes_version must be one of: 1.32, 1.33, 1.34"
+  }
 }
 
 variable "deletion_protection" {
@@ -280,4 +285,65 @@ variable "allowed_ip_ranges" {
   description = "Allowed IP ranges to connect to master"
   default     = ["0.0.0.0/0"]
   type        = list(string)
+}
+
+################################################################################
+# Maintenance Policy Configuration
+################################################################################
+
+variable "enable_eol_maintenance_exclusion" {
+  description = <<-EOT
+    Enable automatic End-of-Life (EOL) maintenance exclusion for the GKE cluster.
+    
+    When set to true (default), this automatically adds maintenance exclusions that prevent
+    automatic minor version upgrades and node upgrades during the end-of-life period for
+    the specified Kubernetes version. This helps maintain cluster stability by preventing
+    automatic upgrades that could potentially cause issues during EOL periods.
+
+    This exclusion is scoped to NO_MINOR_UPGRADES. This will prevent control plane upgrades, 
+    but will allow node patch level upgrades.
+
+    The EOL maintenance exclusions are version-specific and include:
+    - Kubernetes 1.32: EOL from 2024-06-01 to 2026-04-11
+    - Kubernetes 1.33: EOL from 2024-06-01 to 2026-08-03  
+    - Kubernetes 1.34: EOL from 2024-06-01 to 2026-10-01
+    
+    When disabled (false), only user-defined maintenance exclusions from the maintenance_policy
+    variable will be applied. This gives you full control over maintenance scheduling.
+    
+    For more information on GKE release schedules and EOL dates, see:
+    https://cloud.google.com/kubernetes-engine/docs/release-schedule
+  EOT
+  type        = bool
+  default     = true
+}
+
+
+
+variable "maintenance_recurring_window_policy" {
+  description = <<-EOT
+    Recurring maintenance window for the GKE cluster
+
+    When set to true (default), this automatically adds a recurring maintenance window for the GKE cluster. 
+    This helps maintain cluster stability by preventing automatic upgrades that could potentially cause 
+    issues during EOL periods.
+
+    The recurring maintenance window default is set to every Saturday and Sunday from 9:00 AM to 9:00 AM.
+
+    When enable_eol_maintenance_exclusion is set to true, this window is used for patch upgrades.
+    GKE may apply critical upgrades outside of this window. 
+    (https://cloud.google.com/kubernetes-engine/docs/concepts/maintenance-windows-and-exclusions#security-patching)
+
+    See https://cloud.google.com/kubernetes-engine/docs/how-to/maintenance-windows-and-exclusions#maintenance-window-existing_cluster for more information.
+  EOT
+  type = object({
+    start_time = string
+    end_time   = string
+    recurrence = string
+  })
+  default = {
+    start_time = "2023-10-01T09:00:00Z"
+    end_time   = "2023-10-03T09:00:00Z"
+    recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
+  }
 }
