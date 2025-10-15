@@ -129,12 +129,23 @@ resource "google_container_cluster" "cluster" {
   logging_config {
     enable_components = var.logging_config.enable_components
   }
-
   maintenance_policy {
     recurring_window {
-      start_time = "2023-10-01T09:00:00Z"
-      end_time   = "2023-10-03T09:00:00Z"
-      recurrence = "FREQ=WEEKLY;BYDAY=SA,SU"
+      start_time = var.maintenance_recurring_window_policy.start_time
+      end_time   = var.maintenance_recurring_window_policy.end_time
+      recurrence = var.maintenance_recurring_window_policy.recurrence
+
+    }
+    dynamic "maintenance_exclusion" {
+      for_each = var.enable_eol_maintenance_exclusion ? [local.maintenance_version_eol_exclusions_eol_mapping[var.kubernetes_version]] : []
+      content {
+        exclusion_name = maintenance_exclusion.value.exclusion_name
+        start_time     = maintenance_exclusion.value.start_time
+        end_time       = maintenance_exclusion.value.end_time
+        exclusion_options {
+          scope = maintenance_exclusion.value.scope
+        }
+      }
     }
   }
   master_authorized_networks_config {
