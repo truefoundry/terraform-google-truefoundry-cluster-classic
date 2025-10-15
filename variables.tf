@@ -10,7 +10,7 @@ variable "use_existing_cluster" {
 
 
 variable "cluster_node_locations" {
-  description = "AZ for nodes - this should match the region"
+  description = "Availability zones for nodes - should match the region"
   type        = list(string)
 }
 
@@ -36,23 +36,23 @@ variable "network_tags" {
 }
 
 variable "region" {
-  description = "region"
+  description = "GCP region for the cluster"
   type        = string
 }
 
 variable "project" {
-  description = "GCP Project"
+  description = "GCP project ID"
   type        = string
 }
 
 variable "cluster_endpoint_public_access" {
-  description = "GCP Public CIDRs access enabled. This is kept true initially so that other Truefoundry terraform modules which run on user local can access the api server endpoint."
+  description = "Enable public access to the cluster endpoint. Set to true to allow access from public CIDRs, which is required for TrueFoundry modules running locally."
   type        = bool
   default     = true
 }
 
 variable "default_node_pool_config" {
-  description = "Default node pool config"
+  description = "Configuration for the default node pool"
   type = object({
     service_account = optional(string, "default")
     oauth_scopes = optional(list(string), [
@@ -74,7 +74,7 @@ variable "default_node_pool_config" {
   }
 }
 variable "logging_config" {
-  description = "Logging config"
+  description = "Configuration for cluster logging components"
   type = object({
     enable_components = optional(list(string), ["SYSTEM_COMPONENTS", "APISERVER", "CONTROLLER_MANAGER", "SCHEDULER"])
   })
@@ -95,7 +95,7 @@ variable "tags" {
 
 variable "cluster_nap_node_config" {
   description = <<-EOT
-    Configuration for the NAP node pool. This includes:
+    Configuration for the NAP (Node Auto Provisioning) node pool. This includes:
     - disk_size_gb: Size of the disk attached to each node (default: "300")
     - disk_type: Type of disk attached to each node (pd-standard, pd-balanced, pd-ssd) (default: "pd-balanced")
     - enable_secure_boot: Secure Boot helps ensure that the system only runs authentic software (default: true)
@@ -133,7 +133,7 @@ variable "enable_container_image_streaming" {
 }
 
 variable "oauth_scopes" {
-  description = "Oauth Scopes to attach to the cluste"
+  description = "OAuth scopes to attach to the cluster"
   type        = list(string)
   default = [
     "https://www.googleapis.com/auth/cloud-platform",
@@ -147,7 +147,7 @@ variable "oauth_scopes" {
 }
 
 variable "kubernetes_version" {
-  description = "Version of GKE"
+  description = "Kubernetes version for the GKE cluster"
   default     = "1.33"
   type        = string
 
@@ -158,19 +158,19 @@ variable "kubernetes_version" {
 }
 
 variable "deletion_protection" {
-  description = "Deletion protection enabled/disabled"
+  description = "Enable deletion protection for the cluster"
   default     = false
   type        = bool
 }
 
 variable "control_plane_enabled" {
-  description = "Whether control plane is enabled or not"
+  description = "Enable dedicated control plane nodes for the cluster"
   default     = false
   type        = bool
 }
 
 variable "control_plane_pool_config" {
-  description = "Control plane node pool config"
+  description = "Configuration for the control plane node pool"
   type = object({
     disk_size_gb = optional(string, "100")
     disk_type    = optional(string, "pd-balanced")
@@ -205,7 +205,7 @@ variable "control_plane_pool_config" {
 }
 
 variable "critical_pool_config" {
-  description = "Critical node pool config"
+  description = "Configuration for the critical workloads node pool"
   type = object({
     disk_size_gb = optional(string, "100")
     disk_type    = optional(string, "pd-balanced")
@@ -243,18 +243,18 @@ variable "critical_pool_config" {
 ################################################################################
 
 variable "shared_vpc" {
-  description = "Flag to enable shared VPC"
+  description = "Enable shared VPC for the cluster"
   type        = bool
   default     = false
 }
 
 variable "cluster_network_id" {
-  description = "Network ID for the cluster"
+  description = "VPC network ID for the cluster"
   type        = string
 }
 
 variable "cluster_subnet_id" {
-  description = "Subnetwork name for the cluster."
+  description = "Subnetwork name for the cluster"
   type        = string
 }
 
@@ -265,24 +265,24 @@ variable "cluster_networking_mode" {
 }
 
 variable "cluster_master_ipv4_cidr_block" {
-  description = "Master nodes ipv4 cidr"
+  description = "IPv4 CIDR block for the master nodes"
   type        = string
 }
 
 variable "cluster_secondary_range_name" {
-  default     = ""
+  description = "VPC secondary range name for pods"
   type        = string
-  description = "VPC Secondary range name for pods"
+  default     = ""
 }
 
 variable "services_secondary_range_name" {
-  default     = ""
+  description = "VPC secondary range name for services"
   type        = string
-  description = "VPC Secondary range name for services"
+  default     = ""
 }
 
 variable "allowed_ip_ranges" {
-  description = "Allowed IP ranges to connect to master"
+  description = "Allowed IP ranges to connect to the master endpoint"
   default     = ["0.0.0.0/0"]
   type        = list(string)
 }
