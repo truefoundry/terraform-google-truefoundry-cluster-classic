@@ -243,18 +243,18 @@ variable "critical_pool_config" {
 ################################################################################
 
 variable "shared_vpc" {
-  description = "Enable shared VPC for the cluster"
+  description = "Flag to enable shared VPC for the cluster"
   type        = bool
   default     = false
 }
 
 variable "cluster_network_id" {
-  description = "VPC network ID for the cluster"
+  description = "Existing VPC network ID for the cluster"
   type        = string
 }
 
 variable "cluster_subnet_id" {
-  description = "Subnetwork name for the cluster"
+  description = "Existing subnet ID for the cluster"
   type        = string
 }
 
