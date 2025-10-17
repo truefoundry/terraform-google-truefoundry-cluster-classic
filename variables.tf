@@ -107,6 +107,8 @@ variable "cluster_nap_node_config" {
     - auto_upgrade: Flag to enable auto upgrade for the nodes (default: true)
     - max_surge: Maximum number of nodes that can be created beyond the current size during updates (default: 1)
     - max_unavailable: Maximum number of nodes that can be unavailable during updates (default: 0)
+
+    See GKE docs for more information: https://cloud.google.com/kubernetes-engine/docs/how-to/node-auto-provisioning
   EOT
   type = object({
     disk_size_gb                = optional(string, "300")
