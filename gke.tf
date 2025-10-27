@@ -126,6 +126,18 @@ resource "google_container_cluster" "cluster" {
       tags = local.nap_network_tags
     }
   }
+  addons_config {
+
+    gcp_filestore_csi_driver_config {
+      enabled = var.enable_gcp_filestore_csi_driver
+    }
+    gcs_fuse_csi_driver_config {
+      enabled = var.enable_gcs_fuse_csi_driver
+    }
+    gce_persistent_disk_csi_driver_config {
+      enabled = var.enable_gce_persistent_disk_csi_driver
+    }
+  }
   logging_config {
     enable_components = var.logging_config.enable_components
   }
