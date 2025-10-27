@@ -73,6 +73,24 @@ variable "default_node_pool_config" {
   default = {
   }
 }
+
+variable "enable_gce_persistent_disk_csi_driver" {
+  description = "Enable/disable GCE Persistent Disk CSI driver"
+  type        = bool
+  default     = true
+}
+variable "enable_gcp_filestore_csi_driver" {
+  description = "Enable/disable GCP Filestore CSI driver"
+  type        = bool
+  default     = false
+}
+
+variable "enable_gcs_fuse_csi_driver" {
+  description = "Enable/disable GCS Fuse CSI driver"
+  type        = bool
+  default     = false
+}
+
 variable "logging_config" {
   description = "Configuration for cluster logging components"
   type = object({
