@@ -100,6 +100,11 @@ resource "google_container_cluster" "cluster" {
       minimum       = 0
       maximum       = 256
     }
+    resource_limits {
+      resource_type = "nvidia-rtx-pro-6000"
+      minimum       = 0
+      maximum       = 256
+    }
     auto_provisioning_defaults {
       service_account = "default"
       oauth_scopes    = var.oauth_scopes
