@@ -168,12 +168,12 @@ variable "oauth_scopes" {
 
 variable "kubernetes_version" {
   description = "Kubernetes version for the GKE cluster"
-  default     = "1.33"
+  default     = "1.34"
   type        = string
 
   validation {
-    condition     = contains(["1.32", "1.33", "1.34"], var.kubernetes_version)
-    error_message = "kubernetes_version must be one of: 1.32, 1.33, 1.34"
+    condition     = contains(["1.32", "1.33", "1.34", "1.35"], var.kubernetes_version)
+    error_message = "kubernetes_version must be one of: 1.32, 1.33, 1.34, 1.35"
   }
 }
 
