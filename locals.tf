@@ -41,5 +41,11 @@ locals {
       end_time       = "2026-10-01T00:00:00Z"
       scope          = "NO_MINOR_UPGRADES"
     }
+    "1.35" = {
+      exclusion_name = "no_minor_control_plane_upgrades"
+      start_time     = "2024-06-01T00:00:00Z"
+      end_time       = "2027-04-11T00:00:00Z"
+      scope          = "NO_MINOR_UPGRADES"
+    }
   }
 }
