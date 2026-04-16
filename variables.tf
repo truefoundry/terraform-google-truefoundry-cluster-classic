@@ -327,6 +327,7 @@ variable "enable_eol_maintenance_exclusion" {
     - Kubernetes 1.32: EOL from 2024-06-01 to 2026-04-11
     - Kubernetes 1.33: EOL from 2024-06-01 to 2026-08-03  
     - Kubernetes 1.34: EOL from 2024-06-01 to 2026-10-01
+    - Kubernetes 1.35: EOL from 2024-06-01 to 2027-04-11
     
     When disabled (false), only user-defined maintenance exclusions from the maintenance_policy
     variable will be applied. This gives you full control over maintenance scheduling.
