@@ -115,8 +115,8 @@ resource "google_container_cluster" "cluster" {
         enable_integrity_monitoring = var.cluster_nap_node_config.enable_integrity_monitoring
       }
       management {
-        auto_upgrade = var.cluster_nap_node_config.auto_repair
-        auto_repair  = var.cluster_nap_node_config.auto_upgrade
+        auto_upgrade = var.cluster_nap_node_config.auto_upgrade
+        auto_repair  = var.cluster_nap_node_config.auto_repair
       }
       upgrade_settings {
         strategy        = "SURGE"
