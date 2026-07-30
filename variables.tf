@@ -258,6 +258,66 @@ variable "critical_pool_config" {
 
   }
 }
+
+variable "additional_node_pools" {
+  description = <<-EOT
+    Map of additional node pool configurations. Map key is the node pool name.
+
+    Flex Start: set flex_start = true and optionally max_run_duration. GKE requires
+    reservation_affinity = "NO_RESERVATION" for flex pools — this is forced automatically.
+    Pair with enable_queued_provisioning = true and autoscaling.total_max_node_count
+    (with location_policy = "ANY") to match `gcloud ... --flex-start --enable-queued-provisioning`.
+
+    GPUs: add entries to guest_accelerators.
+  EOT
+  type = map(object({
+    machine_type = optional(string, "e2-standard-4")
+    disk_size_gb = optional(string, "100")
+    disk_type    = optional(string, "pd-balanced")
+
+    flex_start       = optional(bool, false)
+    max_run_duration = optional(string)
+
+    autoscaling = optional(object({
+      min_node_count       = optional(number)
+      max_node_count       = optional(number)
+      total_min_node_count = optional(number)
+      total_max_node_count = optional(number)
+      location_policy      = optional(string, "BALANCED")
+    }))
+    guest_accelerators = optional(list(object({
+      type               = string
+      count              = number
+      gpu_driver_version = optional(string, "DEFAULT")
+      gpu_sharing_config = optional(object({
+        gpu_sharing_strategy       = string
+        max_shared_clients_per_gpu = number
+      }))
+    })), [])
+    labels = optional(map(string), {})
+    taints = optional(list(object({
+      key    = string
+      value  = string
+      effect = string
+    })), [])
+    enable_secure_boot            = optional(bool, true)
+    enable_integrity_monitoring   = optional(bool, true)
+    auto_repair                   = optional(bool, true)
+    auto_upgrade                  = optional(bool, true)
+    workload_metadata_config_mode = optional(string, "GKE_METADATA")
+    service_account               = optional(string, "default")
+    preemptible                   = optional(bool, false)
+    spot                          = optional(bool, false)
+    node_locations                = optional(list(string))
+    network_tags                  = optional(list(string))
+    node_count                    = optional(number)
+    max_pods_per_node             = optional(number)
+    enable_queued_provisioning    = optional(bool, false)
+    reservation_affinity          = optional(string)
+    resource_labels               = optional(map(string), {})
+  }))
+  default = {}
+}
 ################################################################################
 # Network Configuration
 ################################################################################

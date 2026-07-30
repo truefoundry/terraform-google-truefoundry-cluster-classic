@@ -21,6 +21,23 @@ locals {
   critical_pool_network_tags = concat(["tfy-critical"], var.network_tags)
   nap_network_tags           = concat(["tfy-nap"], var.network_tags)
 
+  additional_node_pools = var.use_existing_cluster ? {} : var.additional_node_pools
+
+  additional_node_pool_tags = {
+    for name, config in local.additional_node_pools : name => merge(
+      { node_usage = name },
+      try(config.resource_labels, {}),
+      local.tags,
+    )
+  }
+
+  additional_node_pool_network_tags = {
+    for name, config in local.additional_node_pools : name => concat(
+      coalesce(config.network_tags, []),
+      var.network_tags,
+    )
+  }
+
   # Version EOL maintenance exclusion mapping
   maintenance_version_eol_exclusions_eol_mapping = {
     "1.32" = {

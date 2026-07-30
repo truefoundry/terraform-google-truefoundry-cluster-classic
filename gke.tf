@@ -329,6 +329,111 @@ resource "google_container_node_pool" "critical_pool" {
   }
 }
 
+##########################################################################################
+## Additional user-defined node pools
+##########################################################################################
+resource "google_container_node_pool" "additional_pools" {
+  for_each = local.additional_node_pools
+  provider = google-beta
+
+  name              = each.key
+  cluster           = google_container_cluster.cluster[0].id
+  project           = var.project
+  location          = var.region
+  node_locations    = coalesce(each.value.node_locations, var.cluster_node_locations)
+  max_pods_per_node = each.value.max_pods_per_node
+  node_count        = each.value.autoscaling != null ? null : each.value.node_count
+
+  management {
+    auto_repair  = each.value.auto_repair
+    auto_upgrade = each.value.auto_upgrade
+  }
+  
+  dynamic "autoscaling" {
+    for_each = each.value.autoscaling != null ? [each.value.autoscaling] : []
+    content {
+      min_node_count       = autoscaling.value.min_node_count
+      max_node_count       = autoscaling.value.max_node_count
+      total_min_node_count = autoscaling.value.total_min_node_count
+      total_max_node_count = autoscaling.value.total_max_node_count
+      location_policy      = autoscaling.value.location_policy
+    }
+  }
+
+  dynamic "queued_provisioning" {
+    for_each = each.value.flex_start ? [true] : []
+    content {
+      enabled = true
+    }
+  }
+
+  node_config {
+    disk_size_gb     = each.value.disk_size_gb
+    disk_type        = each.value.disk_type
+    machine_type     = each.value.machine_type
+    flex_start       = each.value.flex_start ? true : null
+    max_run_duration = each.value.max_run_duration
+
+    gcfs_config {
+      enabled = var.enable_container_image_streaming
+    }
+
+    labels = each.value.labels
+
+    dynamic "taint" {
+      for_each = each.value.taints
+      content {
+        key    = taint.value.key
+        value  = taint.value.value
+        effect = taint.value.effect
+      }
+    }
+
+    dynamic "guest_accelerator" {
+      for_each = each.value.guest_accelerators
+      content {
+        type  = guest_accelerator.value.type
+        count = guest_accelerator.value.count
+        gpu_driver_installation_config {
+          gpu_driver_version = guest_accelerator.value.gpu_driver_version
+        }
+        dynamic "gpu_sharing_config" {
+          for_each = guest_accelerator.value.gpu_sharing_config != null ? [guest_accelerator.value.gpu_sharing_config] : []
+          content {
+            gpu_sharing_strategy       = gpu_sharing_config.value.gpu_sharing_strategy
+            max_shared_clients_per_gpu = gpu_sharing_config.value.max_shared_clients_per_gpu
+          }
+        }
+      }
+    }
+
+    resource_labels = local.additional_node_pool_tags[each.key]
+
+    shielded_instance_config {
+      enable_secure_boot          = each.value.enable_secure_boot
+      enable_integrity_monitoring = each.value.enable_integrity_monitoring
+    }
+
+    workload_metadata_config {
+      mode = each.value.workload_metadata_config_mode
+    }
+
+    dynamic "reservation_affinity" {
+      for_each = each.value.reservation_affinity != null || each.value.flex_start ? [1] : []
+      content {
+        consume_reservation_type = coalesce(each.value.reservation_affinity, "NO_RESERVATION")
+      }
+    }
+
+    oauth_scopes    = var.oauth_scopes
+    preemptible     = each.value.flex_start ? null : each.value.preemptible
+    spot            = each.value.flex_start ? null : each.value.spot
+    service_account = each.value.service_account
+
+    tags = local.additional_node_pool_network_tags[each.key]
+  }
+}
+
 /******************************************
   CRD are broken in GKE
   https://github.com/kubernetes/kubernetes/issues/79739
