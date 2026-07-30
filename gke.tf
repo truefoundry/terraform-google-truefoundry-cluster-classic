@@ -348,7 +348,7 @@ resource "google_container_node_pool" "additional_pools" {
     auto_repair  = each.value.auto_repair
     auto_upgrade = each.value.auto_upgrade
   }
-  
+
   dynamic "autoscaling" {
     for_each = each.value.autoscaling != null ? [each.value.autoscaling] : []
     content {
@@ -361,7 +361,7 @@ resource "google_container_node_pool" "additional_pools" {
   }
 
   dynamic "queued_provisioning" {
-    for_each = each.value.flex_start ? [true] : []
+    for_each = each.value.enable_queued_provisioning ? [true] : []
     content {
       enabled = true
     }
@@ -419,9 +419,9 @@ resource "google_container_node_pool" "additional_pools" {
     }
 
     dynamic "reservation_affinity" {
-      for_each = each.value.reservation_affinity != null || each.value.flex_start ? [1] : []
+      for_each = each.value.reservation_affinity != null || each.value.flex_start || each.value.enable_queued_provisioning ? [1] : []
       content {
-        consume_reservation_type = coalesce(each.value.reservation_affinity, "NO_RESERVATION")
+        consume_reservation_type = each.value.flex_start || each.value.enable_queued_provisioning ? "NO_RESERVATION" : each.value.reservation_affinity
       }
     }
 
