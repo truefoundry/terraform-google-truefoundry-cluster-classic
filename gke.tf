@@ -371,8 +371,8 @@ resource "google_container_node_pool" "additional_pools" {
     disk_size_gb     = each.value.disk_size_gb
     disk_type        = each.value.disk_type
     machine_type     = each.value.machine_type
-    flex_start       = each.value.flex_start ? true : null
-    max_run_duration = each.value.max_run_duration
+    flex_start       = each.value.flex_start
+    max_run_duration = each.value.flex_start ? coalesce(each.value.max_run_duration, "604800s") : each.value.max_run_duration
 
     gcfs_config {
       enabled = var.enable_container_image_streaming

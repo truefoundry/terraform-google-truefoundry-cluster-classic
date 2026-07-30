@@ -216,8 +216,9 @@ variable "control_plane_pool_config" {
         effect = optional(string, "NO_SCHEDULE")
       }
     ), {})
-    preemptible = optional(bool, false)
-    spot        = optional(bool, false)
+    preemptible  = optional(bool, false)
+    spot         = optional(bool, false)
+    network_tags = optional(list(string), [])
   })
   default = {
 
@@ -251,8 +252,9 @@ variable "critical_pool_config" {
         effect = optional(string, "NO_SCHEDULE")
       }
     ), {})
-    preemptible = optional(bool, false)
-    spot        = optional(bool, false)
+    preemptible  = optional(bool, false)
+    spot         = optional(bool, false)
+    network_tags = optional(list(string), [])
   })
   default = {
 
@@ -261,14 +263,7 @@ variable "critical_pool_config" {
 
 variable "additional_node_pools" {
   description = <<-EOT
-    Map of additional node pool configurations. Map key is the node pool name.
-
-    Flex Start: set flex_start = true and optionally max_run_duration. GKE requires
-    reservation_affinity = "NO_RESERVATION" for flex pools — this is forced automatically.
-    Pair with enable_queued_provisioning = true and autoscaling.total_max_node_count
-    (with location_policy = "ANY") to match `gcloud ... --flex-start --enable-queued-provisioning`.
-
-    GPUs: add entries to guest_accelerators.
+    Map of additional node pool configurations.Supports both flex-start nodepools and normal nodepools.
   EOT
   type = map(object({
     machine_type = optional(string, "e2-standard-4")

@@ -17,8 +17,8 @@ locals {
     },
     local.tags
   )
-  control_plane_network_tags = concat(["tfy-control-plane"], var.network_tags)
-  critical_pool_network_tags = concat(["tfy-critical"], var.network_tags)
+  control_plane_network_tags = concat(["tfy-control-plane"], var.network_tags, var.control_plane_pool_config.network_tags)
+  critical_pool_network_tags = concat(["tfy-critical"], var.network_tags, var.critical_pool_config.network_tags)
   nap_network_tags           = concat(["tfy-nap"], var.network_tags)
 
   additional_node_pools = var.use_existing_cluster ? {} : var.additional_node_pools
@@ -33,8 +33,8 @@ locals {
 
   additional_node_pool_network_tags = {
     for name, config in local.additional_node_pools : name => concat(
-      coalesce(config.network_tags, []),
       var.network_tags,
+      coalesce(config.network_tags, []),
     )
   }
 
