@@ -38,6 +38,14 @@ locals {
     )
   }
 
+  cluster_notifications_enabled     = !var.use_existing_cluster && var.cluster_notification_config.enabled
+  create_cluster_notification_topic = local.cluster_notifications_enabled && var.cluster_notification_config.topic_id == null
+  cluster_notification_topic_id = (
+    local.create_cluster_notification_topic
+    ? one(google_pubsub_topic.cluster_notifications[*].id)
+    : var.cluster_notification_config.topic_id
+  )
+
   # Version EOL maintenance exclusion mapping
   maintenance_version_eol_exclusions_eol_mapping = {
     "1.32" = {

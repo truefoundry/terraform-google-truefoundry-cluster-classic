@@ -1,3 +1,23 @@
+##########################################################################################
+## Cluster notifications
+##########################################################################################
+# GKE only publishes notifications to a topic in the cluster project.
+# See: https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-notifications
+resource "google_pubsub_topic" "cluster_notifications" {
+  count   = local.create_cluster_notification_topic ? 1 : 0
+  project = var.project
+  name    = "${var.cluster_name}-gke-notifications"
+  labels  = local.tags
+}
+
+resource "google_pubsub_topic_iam_member" "cluster_notifications_publisher" {
+  count   = local.create_cluster_notification_topic ? 1 : 0
+  project = var.project
+  topic   = google_pubsub_topic.cluster_notifications[0].name
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:service-${data.google_project.current[0].number}@container-engine-robot.iam.gserviceaccount.com"
+}
+
 # See: https://registry.terraform.io/providers/hashicorp/google-beta/latest/docs/resources/container_cluster
 resource "google_container_cluster" "cluster" {
   count                       = var.use_existing_cluster ? 0 : 1
@@ -194,6 +214,20 @@ resource "google_container_cluster" "cluster" {
     enabled = true
   }
 
+  # Omitted entirely when disabled so that clusters created before this block existed stay driftless
+  dynamic "notification_config" {
+    for_each = local.cluster_notifications_enabled ? [1] : []
+    content {
+      pubsub {
+        enabled = true
+        topic   = local.cluster_notification_topic_id
+        filter {
+          event_type = var.cluster_notification_config.event_types
+        }
+      }
+    }
+  }
+
   # Enable Autopilot for this cluster
   # enable_autopilot = false
 
@@ -217,6 +251,9 @@ resource "google_container_cluster" "cluster" {
       }
     }
   }
+
+  # The service agent must be able to publish before GKE starts emitting notifications
+  depends_on = [google_pubsub_topic_iam_member.cluster_notifications_publisher]
 
   lifecycle {
     ignore_changes = [
