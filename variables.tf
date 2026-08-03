@@ -404,11 +404,6 @@ variable "cluster_notification_config" {
     reject cluster create/update calls unless SecurityBulletinEvent notifications are enabled. Set
     enabled to true in those organizations.
 
-    This is opt-in so that clusters created before this option existed do not see a diff. Because the
-    notification config is left unmanaged while disabled, flipping enabled back to false does not turn
-    notifications off on an existing cluster, use `gcloud container clusters update CLUSTER_NAME
-    --notification-config=pubsub=DISABLED` for that.
-
     - enabled: Publish cluster notifications to a Pub/Sub topic (default: false)
     - topic_id: Full id of an existing Pub/Sub topic ("projects/PROJECT/topics/TOPIC") to publish to.
       The topic must live in the same project as the cluster. When null, the module creates the topic
