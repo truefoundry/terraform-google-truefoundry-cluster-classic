@@ -396,6 +396,45 @@ variable "enable_eol_maintenance_exclusion" {
 
 
 
+variable "cluster_notification_config" {
+  description = <<-EOT
+    Configuration for GKE cluster notifications published to Pub/Sub.
+
+    Organizations that enforce `constraints/container.managed.enableSecurityBulletinNotifications`
+    reject cluster create/update calls unless SecurityBulletinEvent notifications are enabled. Set
+    enabled to true in those organizations.
+
+    - enabled: Publish cluster notifications to a Pub/Sub topic (default: false)
+    - topic_id: Full id of an existing Pub/Sub topic ("projects/PROJECT/topics/TOPIC") to publish to.
+      The topic must live in the same project as the cluster. When null, the module creates the topic
+      "CLUSTER_NAME-gke-notifications" and grants roles/pubsub.publisher on it to the GKE service
+      agent (default: null)
+    - event_types: Notification types to publish. Must include SECURITY_BULLETIN_EVENT to satisfy the
+      org policy above (default: ["SECURITY_BULLETIN_EVENT"])
+
+    See https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-notifications
+  EOT
+  type = object({
+    enabled     = optional(bool, false)
+    topic_id    = optional(string, null)
+    event_types = optional(list(string), ["SECURITY_BULLETIN_EVENT"])
+  })
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for event_type in var.cluster_notification_config.event_types :
+      contains(["SECURITY_BULLETIN_EVENT", "UPGRADE_AVAILABLE_EVENT", "UPGRADE_EVENT", "UPGRADE_INFO_EVENT"], event_type)
+    ])
+    error_message = "event_types must only contain SECURITY_BULLETIN_EVENT, UPGRADE_AVAILABLE_EVENT, UPGRADE_EVENT or UPGRADE_INFO_EVENT."
+  }
+
+  validation {
+    condition     = !var.cluster_notification_config.enabled || contains(var.cluster_notification_config.event_types, "SECURITY_BULLETIN_EVENT")
+    error_message = "event_types must include SECURITY_BULLETIN_EVENT, otherwise the constraints/container.managed.enableSecurityBulletinNotifications org policy rejects the cluster."
+  }
+}
+
 variable "maintenance_recurring_window_policy" {
   description = <<-EOT
     Recurring maintenance window for the GKE cluster

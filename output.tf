@@ -23,6 +23,11 @@ output "cluster_master_version" {
   value       = var.use_existing_cluster ? data.google_container_cluster.existing_cluster[0].master_version : google_container_cluster.cluster[0].master_version
 }
 
+output "cluster_notification_topic_id" {
+  description = "Pub/Sub topic the cluster publishes notifications to, null when notifications are disabled"
+  value       = local.cluster_notification_topic_id
+}
+
 output "cluster_secondary_range_name" {
   description = "Cluster secondary range name for pod IPs"
   value       = var.cluster_secondary_range_name

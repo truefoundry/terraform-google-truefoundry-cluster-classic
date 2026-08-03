@@ -30,7 +30,10 @@ No modules.
 | [google_compute_firewall.fix_webhooks](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/compute_firewall) | resource |
 | [google_container_node_pool.control_plane_pool](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/container_node_pool) | resource |
 | [google_container_node_pool.critical_pool](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/container_node_pool) | resource |
+| [google_pubsub_topic.cluster_notifications](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/pubsub_topic) | resource |
+| [google_pubsub_topic_iam_member.cluster_notifications_publisher](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/resources/pubsub_topic_iam_member) | resource |
 | [google_container_cluster.existing_cluster](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/data-sources/container_cluster) | data source |
+| [google_project.current](https://registry.terraform.io/providers/hashicorp/google/6.47/docs/data-sources/project) | data source |
 
 ## Inputs
 
@@ -45,6 +48,7 @@ No modules.
 | <a name="input_cluster_network_id"></a> [cluster\_network\_id](#input\_cluster\_network\_id) | Existing VPC network ID for the cluster | `string` | n/a | yes |
 | <a name="input_cluster_networking_mode"></a> [cluster\_networking\_mode](#input\_cluster\_networking\_mode) | Networking mode for the cluster. Values can be VPC\_NATIVE (recommended) or ROUTES. VPC\_NATIVE is default after google-beta 5.0.0 | `string` | `"VPC_NATIVE"` | no |
 | <a name="input_cluster_node_locations"></a> [cluster\_node\_locations](#input\_cluster\_node\_locations) | Availability zones for nodes - should match the region | `list(string)` | n/a | yes |
+| <a name="input_cluster_notification_config"></a> [cluster\_notification\_config](#input\_cluster\_notification\_config) | Configuration for GKE cluster notifications published to Pub/Sub.<br/><br/>Organizations that enforce `constraints/container.managed.enableSecurityBulletinNotifications`<br/>reject cluster create/update calls unless SecurityBulletinEvent notifications are enabled. Set<br/>enabled to true in those organizations.<br/><br/>- enabled: Publish cluster notifications to a Pub/Sub topic (default: false)<br/>- topic\_id: Full id of an existing Pub/Sub topic ("projects/PROJECT/topics/TOPIC") to publish to.<br/>  The topic must live in the same project as the cluster. When null, the module creates the topic<br/>  "CLUSTER\_NAME-gke-notifications" and grants roles/pubsub.publisher on it to the GKE service<br/>  agent (default: null)<br/>- event\_types: Notification types to publish. Must include SECURITY\_BULLETIN\_EVENT to satisfy the<br/>  org policy above (default: ["SECURITY\_BULLETIN\_EVENT"])<br/><br/>See https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-notifications | <pre>object({<br/>    enabled     = optional(bool, false)<br/>    topic_id    = optional(string, null)<br/>    event_types = optional(list(string), ["SECURITY_BULLETIN_EVENT"])<br/>  })</pre> | `{}` | no |
 | <a name="input_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#input\_cluster\_secondary\_range\_name) | VPC secondary range name for pods | `string` | `""` | no |
 | <a name="input_cluster_subnet_id"></a> [cluster\_subnet\_id](#input\_cluster\_subnet\_id) | Existing subnet ID for the cluster | `string` | n/a | yes |
 | <a name="input_control_plane_enabled"></a> [control\_plane\_enabled](#input\_control\_plane\_enabled) | Enable dedicated control plane nodes for the cluster | `bool` | `false` | no |
@@ -78,6 +82,7 @@ No modules.
 | <a name="output_cluster_id"></a> [cluster\_id](#output\_cluster\_id) | The id of the GKE cluster |
 | <a name="output_cluster_master_version"></a> [cluster\_master\_version](#output\_cluster\_master\_version) | Master version for the cluster |
 | <a name="output_cluster_name"></a> [cluster\_name](#output\_cluster\_name) | The name of the GKE cluster |
+| <a name="output_cluster_notification_topic_id"></a> [cluster\_notification\_topic\_id](#output\_cluster\_notification\_topic\_id) | Pub/Sub topic the cluster publishes notifications to, null when notifications are disabled |
 | <a name="output_cluster_secondary_range_name"></a> [cluster\_secondary\_range\_name](#output\_cluster\_secondary\_range\_name) | Cluster secondary range name for pod IPs |
 | <a name="output_services_secondary_range_name"></a> [services\_secondary\_range\_name](#output\_services\_secondary\_range\_name) | Cluster secondry range name for service IPs |
 <!-- END_TF_DOCS -->
