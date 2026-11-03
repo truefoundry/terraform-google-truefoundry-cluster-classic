@@ -172,8 +172,8 @@ variable "kubernetes_version" {
   type        = string
 
   validation {
-    condition     = contains(["1.32", "1.33", "1.34", "1.35"], var.kubernetes_version)
-    error_message = "kubernetes_version must be one of: 1.32, 1.33, 1.34, 1.35"
+    condition     = contains(["1.32", "1.33", "1.34", "1.35", "1.36"], var.kubernetes_version)
+    error_message = "kubernetes_version must be one of: 1.32, 1.33, 1.34, 1.35, 1.36"
   }
 }
 
@@ -383,6 +383,7 @@ variable "enable_eol_maintenance_exclusion" {
     - Kubernetes 1.33: EOL from 2024-06-01 to 2026-08-03  
     - Kubernetes 1.34: EOL from 2024-06-01 to 2026-10-01
     - Kubernetes 1.35: EOL from 2024-06-01 to 2027-04-11
+    - Kubernetes 1.36: EOL from 2024-06-01 to 2027-08-09
     
     When disabled (false), only user-defined maintenance exclusions from the maintenance_policy
     variable will be applied. This gives you full control over maintenance scheduling.
