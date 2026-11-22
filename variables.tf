@@ -79,6 +79,12 @@ variable "enable_gce_persistent_disk_csi_driver" {
   type        = bool
   default     = true
 }
+variable "enable_network_policy" {
+  description = "Enable Kubernetes NetworkPolicy enforcement with Calico (network_policy block and NetworkPolicy addon). When false, neither block is set, so existing clusters keep whatever they have; setting it back to false on a cluster where it was enabled disables enforcement and recreates the node pools."
+  type        = bool
+  default     = false
+}
+
 variable "enable_gcp_filestore_csi_driver" {
   description = "Enable/disable GCP Filestore CSI driver"
   type        = bool

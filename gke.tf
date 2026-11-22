@@ -162,6 +162,21 @@ resource "google_container_cluster" "cluster" {
     gce_persistent_disk_csi_driver_config {
       enabled = var.enable_gce_persistent_disk_csi_driver
     }
+    dynamic "network_policy_config" {
+      for_each = var.enable_network_policy ? [1] : []
+      content {
+        disabled = false
+      }
+    }
+  }
+
+  # Omitted when disabled so clusters created before this block existed stay driftless
+  dynamic "network_policy" {
+    for_each = var.enable_network_policy ? [1] : []
+    content {
+      enabled  = true
+      provider = "CALICO"
+    }
   }
   logging_config {
     enable_components = var.logging_config.enable_components
